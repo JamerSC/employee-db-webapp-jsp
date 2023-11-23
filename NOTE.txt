@@ -1,0 +1,6 @@
+1. Created a Java Dynamic Web Project 
+2. Add JDBC at the /WebContent/WEB-INF-lib
+3. Then go /WebContent/MATA-INF/Create 'context.xml' for Connection Pool Configs
+4. Go to Source create new Package -> ex. 'com.jamersc.jdbc'
+5. In a package Create a new Servlet -> ex. TestServlet
+6. Go to servlet class -> add annotations for dafining datasource/connection pool

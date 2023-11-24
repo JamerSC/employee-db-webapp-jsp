@@ -4,3 +4,9 @@
 4. Go to Source create new Package -> ex. 'com.jamersc.jdbc'
 5. In a package Create a new Servlet -> ex. TestServlet
 6. Go to servlet class -> add annotations for dafining datasource/connection pool
+7. Create a Employee.java Class in com.jamersc.web.jdbc (CLASS)
+	Source -> variable -> constructor -> get & set -> toString method
+8. Create a EmployeeDbUtil.java in com.jamersc.web.jdbc (MODEL)
+	variable -> constructor
+9. Create a Employee Controller Servlet (Controller)
+10.

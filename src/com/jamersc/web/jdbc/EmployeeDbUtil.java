@@ -2,7 +2,9 @@ package com.jamersc.web.jdbc;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,5 +89,48 @@ public class EmployeeDbUtil {
 			exc.printStackTrace();
 		}
 	}
+
+	public void addEmployee(Employee theEmployee) throws SQLException {
+		
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		
+		try {
+			// db connection
+			myConn = dataSource.getConnection();
+			
+			// create sql for insert
+			//String sql = "INSERT INTO employee "
+			//		+ "(first_name, last_name, age, email, designation, salary, employment_date)"
+			//		+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
+			
+			myStmt = myConn.prepareStatement("INSERT INTO employee "
+					+ "(first_name, last_name, age, email, designation, salary, employment_date)"
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?)");
+			
+			// set the parameter values for the student
+			myStmt.setString(1, theEmployee.getFirstName());
+			myStmt.setString(2, theEmployee.getLastName());
+			myStmt.setInt(3, theEmployee.getAge());
+			myStmt.setString(4, theEmployee.getEmail());
+			myStmt.setString(5, theEmployee.getDesignation());
+			myStmt.setDouble(6, theEmployee.getSalary());
+		
+			//myStmt.setDate(7, theEmployee.getEmploymentDate()); //error!
+			
+	        // Convert java.util.Date to java.sql.Date
+	        java.util.Date utilDate = theEmployee.getEmploymentDate();
+	        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+	        myStmt.setDate(7, sqlDate);
+	        
+			// execute sql insert
+	        myStmt.execute();
+		
+		} finally {
+			// clean up JDBC Objects
+			close(myConn, myStmt, null);
+		}
+	}
+
 	
 }

@@ -1,6 +1,6 @@
 package com.jamersc.web.jdbc;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Employee {
 	
@@ -128,16 +128,4 @@ public class Employee {
 				+ " Salary= "+ salary +", Employment date= " + employmentDate + "]";
 	}
 	
-	/*
-	public static void main(String [] args) {
-        LocalDate employmentDate = LocalDate.of(2023, 11, 24); // Example date
-        Employee employee = new Employee("John", "Doe", 30, "john.doe@example.com", "Developer", 50000.0, employmentDate);
-
-        // Accessing the employment date
-        //LocalDate retrievedEmploymentDate = employee.getEmploymentDate();
-        //System.out.println("Employment Date: " + retrievedEmploymentDate);
-        
-        System.out.println(employee);
-	}
-	*/
 }

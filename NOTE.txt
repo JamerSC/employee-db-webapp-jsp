@@ -1,5 +1,5 @@
 1. Created a Java Dynamic Web Project 
-2. Add JDBC at the /WebContent/WEB-INF-lib
+2. Add JDBC jar file into /WebContent/WEB-INF-lib
 3. Then go /WebContent/MATA-INF/Create 'context.xml' for Connection Pool Configs
 4. Go to Source create new Package -> ex. 'com.jamersc.jdbc'
 5. In a package Create a new Servlet -> ex. TestServlet
@@ -9,4 +9,25 @@
 8. Create a EmployeeDbUtil.java in com.jamersc.web.jdbc (MODEL)
 	variable -> constructor
 9. Create a Employee Controller Servlet (Controller)
-10.
+10. Add JSTL jar file into /WebContent/WEB-INF-lib
+11. Replace JSP Scriplet into JSP JSTL tag or Core Tags
+12.Adding welcome file Go to /WebContent/WEB-INF/web.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  <display-name>employee-management</display-name>
+  <welcome-file-list>
+  	<welcome-file>EmployeeControllerServlet</welcome-file>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+  </welcome-file-list>
+</web-app>
+ from
+ http://localhost:8080/employee-management/EmployeeControllerServlet
+ to
+ http://localhost:8080/employee-management/index.html
+13. Create an index.html for welcome file
+14. Creating add button & forms

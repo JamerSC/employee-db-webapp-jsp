@@ -12,8 +12,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Employee List</title>
+<!-- CSS -->
 <link type="text/css" rel="stylesheet" href="css/list-employee.css"></link>
-</head>
+<!-- Font Aweseome API -->
+<script src="https://kit.fontawesome.com/5f04b1dac9.js"></script>
 <!-- JSP scriplet code 
 < %
 	//get the employees from the request object (sent by servlet)
@@ -40,7 +42,7 @@
 			
 			<table>
 				<tr>
-					<th>Employee No.</th>
+					<th>ID No.</th>
 					<th>First Name</th>
 					<th>Last Name</th>
 					<th>Age</th>
@@ -48,10 +50,24 @@
 					<th>Designation</th>
 					<th>Salary</th>
 					<th>Employment Date</th>
+					<th>Update</th>
+					<th>Delete</th>
 				</tr>
 					<!-- remove JSP scriplet
 					< % for (Employee tempEmployees : theEmployees) { % > -->
 				 	<c:forEach var="tempEmployee" items="${EMPLOYEE_LIST}">
+				 	
+				 	<!--  Set up a link for each employee & go to update form -->
+				 	<c:url var="tempLink" value="EmployeeControllerServlet">
+				 		<c:param name="command" value="LOAD" />
+				 		<c:param name="employeeId" value="${tempEmployee.id}" />
+				 	</c:url>
+				 	
+				 	<!--  Set up a link to delete employee -->
+				 	<c:url var="deleteLink" value="EmployeeControllerServlet">
+				 		<c:param name="command" value="DELETE" />
+				 		<c:param name="employeeId" value="${tempEmployee.id}" />
+				 	</c:url>
 				<tr>
 					<!-- remove JSP scriplet
 					<td>< %= tempEmployees.getId() %></td>
@@ -63,6 +79,7 @@
 					<td>< %= tempEmployees.getSalary() %></td>	
 					<td>< %= tempEmployees.getEmploymentDate() %></td>					
 					 -->
+					 
 					 <td>${tempEmployee.id}</td>
 					 <td>${tempEmployee.firstName}</td>
 					 <td>${tempEmployee.lastName}</td>
@@ -71,6 +88,12 @@
 					 <td>${tempEmployee.designation}</td>
 					 <td>${tempEmployee.salary}</td>
 					 <td>${tempEmployee.employmentDate}</td>
+					 <td><a href="${tempLink}"><i class='fas fa-edit' style='font-size:24px; color:green'></i></a></td>
+					 <td><a href="${deleteLink}"
+						 	onclick="confirm('Are you sure you want to delete?') ? deleteFunction() : void(0);">
+						 	<i class='fas fa-trash-alt' style='font-size:24px; color:red'></i>
+					 	</a>
+					 </td>
 				</tr>		
 				 	</c:forEach>
 				<!-- remove JSP scriplet 

@@ -60,7 +60,19 @@ public class EmployeeControllerServlet extends HttpServlet {
 				listEmployees(request, response);
 				break;
 			case "ADD":
+				//add new employee
 				addEmployee(request, response);
+				break;
+			case "LOAD":
+				//fetch selected employee
+				loadEmployee(request, response);
+				break;
+			case "UPDATE":
+				//update employee
+				updateEmployee(request, response);
+				break;
+			case "DELETE":
+				deleteEmployee(request, response);
 				break;
 			default:
 				//list employees MVC list-employee.jsp
@@ -68,13 +80,68 @@ public class EmployeeControllerServlet extends HttpServlet {
 				
 			}
 			
-			
 		} catch (Exception exc) {
 			// TODO Auto-generated catch block
 			//exc.printStackTrace();
 			throw new ServletException(exc);
 		}
 		
+	}
+
+
+	private void deleteEmployee(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		// TODO Auto-generated method stub
+		String theEmployeeId = request.getParameter("employeeId");
+	
+		//perform update on the database
+		EmployeeDbUtil.deleteEmployee(theEmployeeId);
+		
+		//send back to the list-employee.jsp
+		listEmployees(request, response);
+	}
+
+
+	private void updateEmployee(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		//read student info from data form
+		int id = Integer.parseInt(request.getParameter("employeeId"));
+		String firstName = request.getParameter("firstName");
+		String lastName = request.getParameter("lastName");
+		int age = Integer.parseInt(request.getParameter("age"));
+		String email = request.getParameter("email");
+		String designation = request.getParameter("designation");
+		double salary = Double.parseDouble(request.getParameter("salary"));
+		//convert string into date format
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date employmentDate = dateFormat.parse(request.getParameter("employmentDate"));
+		
+		//create a new student object
+		Employee theEmployee = new Employee(id, firstName, lastName, age, email, designation, salary, employmentDate);
+		
+		//perform update on the database
+		EmployeeDbUtil.updateEmployee(theEmployee);
+		
+		//send back to the list-employee.jsp
+		listEmployees(request, response);
+		
+	}
+
+
+	private void loadEmployee(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		//read the employee id from form data
+		String theEmployeeId = request.getParameter("employeeId");
+		
+		//get employee from database (db util)
+		Employee theEmployee  = EmployeeDbUtil.getEmployee(theEmployeeId);
+		
+		//place student in request attribute
+		request.setAttribute("THE_EMPLOYEE", theEmployee);
+		
+		//send to jsp page: update-employee-form.jsp
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/update-employee-form.jsp");
+		
+		dispatcher.forward(request, response);
 	}
 
 
@@ -99,7 +166,6 @@ public class EmployeeControllerServlet extends HttpServlet {
 			return;  // Return or handle the error accordingly
 		}
 
-		
 		// create a new employee object
 		Employee theEmployee = new Employee(firstName, lastName, age, email, designation, salary, employmentDate);
 		

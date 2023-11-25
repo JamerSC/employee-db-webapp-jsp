@@ -13,13 +13,13 @@ import javax.sql.DataSource;
 
 public class EmployeeDbUtil {
 
-	private DataSource dataSource;
+	private static DataSource dataSource;
 	
 	EmployeeDbUtil(DataSource theDataSource) {
 		dataSource = theDataSource;
 	}
 	
-	public List<Employee> getEmpoyees() throws Exception {
+	public List<Employee> getEmpoyees() throws SQLException {
 		
 		//List of Employees
 		List<Employee> employees = new ArrayList<>();
@@ -70,7 +70,7 @@ public class EmployeeDbUtil {
 
 	}
 
-	private void close(Connection myConn, Statement myStmt, ResultSet myRs) {
+	private static void close(Connection myConn, Statement myStmt, ResultSet myRs) {
 		// TODO Auto-generated method stub
 		try {
 			
@@ -104,11 +104,12 @@ public class EmployeeDbUtil {
 			//		+ "(first_name, last_name, age, email, designation, salary, employment_date)"
 			//		+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
 			
+			//set up to avoid sql injection
 			myStmt = myConn.prepareStatement("INSERT INTO employee "
 					+ "(first_name, last_name, age, email, designation, salary, employment_date)"
 					+ "VALUES (?, ?, ?, ?, ?, ?, ?)");
 			
-			// set the parameter values for the student
+			// set the parameter values for the employee
 			myStmt.setString(1, theEmployee.getFirstName());
 			myStmt.setString(2, theEmployee.getLastName());
 			myStmt.setInt(3, theEmployee.getAge());
@@ -130,6 +131,136 @@ public class EmployeeDbUtil {
 			// clean up JDBC Objects
 			close(myConn, myStmt, null);
 		}
+	}
+
+	public static Employee getEmployee(String theEmployeeId) throws Exception  {
+		
+		Employee theEmployee = null;
+		
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+		int employeeId;
+		
+		try {
+			
+			//convert employee id into int
+			employeeId = Integer.parseInt(theEmployeeId);
+			
+			//get a connection
+			myConn = dataSource.getConnection();
+					
+			//create a sql query get selected employee
+			String sql = "SELECT * FROM employee WHERE id = ?";
+			
+			//created prepared statement
+			myStmt = myConn.prepareStatement(sql);
+			
+			//set params
+			myStmt.setInt(1, employeeId);
+			
+			//execute statemet
+			myRs = myStmt.executeQuery();
+			
+			//retrieve data from result set row
+			if (myRs.next()) {
+				
+				String firstName = myRs.getString("first_name");
+				String lastName = myRs.getString("last_name");
+				int age = myRs.getInt("age");
+				String email = myRs.getString("email");
+				String designation = myRs.getString("designation");
+				double salary = myRs.getDouble("salary");
+				Date employmentDate = myRs.getDate("employment_date");
+				
+				//construct an object
+				theEmployee = new Employee(employeeId, firstName, lastName, age, email, designation, salary, employmentDate);
+			
+			} else {
+				throw new Exception("Could not find employee" + employeeId);
+			}
+				
+			
+			return theEmployee;
+			
+		} finally {
+			
+			close(myConn, myStmt, myRs);
+		}
+
+	}
+
+	public static void updateEmployee(Employee theEmployee) throws Exception{
+		
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		
+		try {
+			
+			//connection to db
+			myConn = dataSource.getConnection();
+			
+			//create sql update statement
+			String sql = "UPDATE employee "
+					+ "SET first_name=?, last_name=?, age=?, email=?, "
+					+ "designation=?, salary=?, employment_date=? "
+					+ "WHERE id=?";
+			
+			//execute statement
+			myStmt = myConn.prepareStatement(sql);
+			
+			// set the parameter values for the student
+			myStmt.setString(1, theEmployee.getFirstName());
+			myStmt.setString(2, theEmployee.getLastName());
+			myStmt.setInt(3, theEmployee.getAge());
+			myStmt.setString(4, theEmployee.getEmail());
+			myStmt.setString(5, theEmployee.getDesignation());
+			myStmt.setDouble(6, theEmployee.getSalary());
+			java.util.Date utilDate = theEmployee.getEmploymentDate();
+			java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+			myStmt.setDate(7, sqlDate);
+			myStmt.setInt(8, theEmployee.getId());
+			
+			// execute sql update
+			myStmt.execute();
+			
+		} finally {
+			//clean up JDBC object
+			close(myConn, myStmt, null);
+		}
+		
+	}
+
+	public static void deleteEmployee(String theEmployeeId) throws Exception {
+		
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		int employeeId;
+		
+		try {
+			// convert employee id
+			employeeId = Integer.parseInt(theEmployeeId);
+			
+			//get connection
+			myConn = dataSource.getConnection();
+			
+			//Create sql delete statement
+			String sql = "DELETE FROM employee WHERE id=?";
+			
+			myStmt = myConn.prepareStatement(sql);
+			
+			//set params
+			myStmt.setInt(1, employeeId);
+			
+			//execute query
+			myStmt.execute();
+			
+			
+		} finally {
+			//clean up JDBC code
+			close(myConn, myStmt, null);
+		}
+		
 	}
 
 	

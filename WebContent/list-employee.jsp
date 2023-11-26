@@ -12,8 +12,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Employee List</title>
-<!-- CSS -->
-<link type="text/css" rel="stylesheet" href="css/list-employee.css"></link>
+<!-- CSS External ?v1 -->
+<link type="text/css" rel="stylesheet" href="css/list-employee.css?v1"></link>
 <!-- Font Aweseome API -->
 <script src="https://kit.fontawesome.com/5f04b1dac9.js"></script>
 <!-- JSP scriplet code 
@@ -33,12 +33,26 @@
 	
 	<div id="container">
 		<div id="content">
-			
+			<div class="add-search-space">
 			<!-- Add new button -->
-			<input type="button" value="Add Student"
+			<button onclick="window.location.href='add-employee-form.jsp'; return false;">
+					Add New Employee</button>
+			<!-- 
+			<input type="button" value="Add New Employee"
 				onclick="window.location.href='add-employee-form.jsp'; return false;"
-				class="add-student-button"
-			/>
+				class="add-employee-button"	/>
+			 -->
+		
+			<!--  Add search textbox -->
+			<form action="EmployeeControllerServlet" method="GET">
+			
+				<input type="hidden" name="command" value="SEARCH"/>
+				<label>Search Employee:</label>
+				<input type="text" name="searchEmployeeName"/>
+				
+				<input type="submit" value="Search" class="add-employee-button"/>
+			</form>
+			</div>
 			
 			<table>
 				<tr>

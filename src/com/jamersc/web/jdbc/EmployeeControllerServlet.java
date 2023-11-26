@@ -72,7 +72,11 @@ public class EmployeeControllerServlet extends HttpServlet {
 				updateEmployee(request, response);
 				break;
 			case "DELETE":
+				//Delete selected employe
 				deleteEmployee(request, response);
+				break;
+			case "SEARCH":
+				searchEmployees(request, response);
 				break;
 			default:
 				//list employees MVC list-employee.jsp
@@ -85,6 +89,23 @@ public class EmployeeControllerServlet extends HttpServlet {
 			//exc.printStackTrace();
 			throw new ServletException(exc);
 		}
+		
+	}
+
+
+	private void searchEmployees(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		//read search name from form data
+		String searchEmployeeName = request.getParameter("searchEmployeeName");
+		
+		//search employee in employee db util
+		List<Employee> theEmployees = EmployeeDbUtil.searchEmployees(searchEmployeeName);
+		
+		request.setAttribute("EMPLOYEE_LIST", theEmployees);
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/list-employee.jsp");
+		
+		dispatcher.forward(request, response);
 		
 	}
 
@@ -181,10 +202,10 @@ public class EmployeeControllerServlet extends HttpServlet {
 	private void listEmployees(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		//get the employees from db util
-		List<Employee> employees = employeeDbUtil.getEmpoyees(); //OBJECT
+		List<Employee> theEmployees = employeeDbUtil.getEmpoyees(); //OBJECT
 		
 		//add employees to the request
-		request.setAttribute("EMPLOYEE_LIST", employees); //Set Name
+		request.setAttribute("EMPLOYEE_LIST", theEmployees); //Set Name
 		
 		//send to JSP Page (View)
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/list-employee.jsp");

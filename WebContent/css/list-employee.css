@@ -27,10 +27,15 @@
         #content {
             overflow-x: auto;
         }
+        
+        .add-search-space {
+			display: flex;
+			justify-content: space-between;
+		}
 
-        .add-student-button {
+        button {
             display: inline-block;
-            padding: 15px 30px;
+            padding: 10px 25px;
             font-size: 1.2em;
             text-decoration: none;
             background-color: #333;
@@ -41,9 +46,35 @@
             transition: background-color 0.3s;
         }
 
-        .add-student-button:hover {
+        button:hover {
             background-color: #555;
         }
+        
+        form label {
+			font-size: 18px;
+		}
+		
+        form input[type="text"] {
+			padding: 10px 25px;
+			font-size: 18px;
+		}
+		
+        form .add-employee-button {
+			display: inline-block;
+            padding: 10px 25px;
+            font-size: 1.2em;
+            text-decoration: none;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+		}
+		
+		form .add-employee-button:hover {
+			background-color: #555;
+		}
         
         table {
             width: 100%;
@@ -70,7 +101,7 @@
         
 
         @media only screen and (max-width: 600px) {
-			.add-student-button {
+			.add-employee-button {
                 padding: 10px 20px;
                 font-size: 1em;
             }

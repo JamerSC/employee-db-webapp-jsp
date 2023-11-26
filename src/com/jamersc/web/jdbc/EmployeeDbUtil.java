@@ -33,7 +33,8 @@ public class EmployeeDbUtil {
 			myConn = dataSource.getConnection();
 			
 			//create a sql statement
-			String sql = "SELECT * FROM employee ORDER BY last_name";
+			//String sql = "SELECT * FROM employee ORDER BY last_name";
+			String sql = "SELECT * FROM employee ORDER BY id ASC";
 			
 			myStmt = myConn.createStatement();
 			
@@ -261,6 +262,74 @@ public class EmployeeDbUtil {
 			close(myConn, myStmt, null);
 		}
 		
+	}
+
+	public static List<Employee> searchEmployees(String searchEmployeeName) throws Exception {
+		
+		List<Employee> employees = new ArrayList<>();
+		
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+		//int employeeId;
+		
+		try {
+			//get connection
+			myConn = dataSource.getConnection();
+			
+			//if the search name is not empty
+			if (searchEmployeeName != null && searchEmployeeName.trim().length() > 0) {
+				
+				//create sql statement to search name
+				String sql = "SELECT * FROM employee WHERE "
+						+ "LOWER(first_name) LIKE ? OR LOWER(last_name) LIKE ?";
+				
+				//prepared statement
+				myStmt = myConn.prepareStatement(sql);
+				
+				//set parameters
+				String searchEmployeeNameLike = "%" + searchEmployeeName.toLowerCase() + "%";
+				
+				myStmt.setString(1, searchEmployeeNameLike);
+				myStmt.setString(2, searchEmployeeNameLike);
+			} else {
+				
+				// create sql to get all students
+                String sql = "SELECT * FROM employee ORDER BY last_name";
+                //String sql = "SELECT * FROM employee";
+                
+                myStmt = myConn.prepareStatement(sql);
+			}	
+			
+			//execute query
+			myRs = myStmt.executeQuery();
+			
+			while(myRs.next()) {
+			
+				//retrieve data from result set row
+				int id = myRs.getInt("id");
+				String firstName = myRs.getString("first_name");
+				String lastName = myRs.getString("last_name");
+				int age = myRs.getInt("age");
+				String email = myRs.getString("email");
+				String designation = myRs.getString("designation");
+				double salary = myRs.getDouble("salary");
+				Date employmentDate = myRs.getDate("employment_date");
+				
+				Employee tempEmployee = new Employee(id, firstName, lastName, age, email, designation, salary, employmentDate);
+				
+				employees.add(tempEmployee); 
+			}
+			
+			return employees;
+			
+		} finally {
+			//close JDBC Connection
+			close(myConn, myStmt, myRs);
+		}
+		
+		
+
 	}
 
 	

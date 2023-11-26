@@ -1,6 +1,6 @@
 # Employee Management System (J2EE)
 
-# BriefDescription
+# Brief Description
 # A simple employee management web app, below are the following fxn:
 # 1. Display list of Employees
 # 2. Create New Employee

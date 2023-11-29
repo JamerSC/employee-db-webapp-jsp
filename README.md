@@ -1,4 +1,4 @@
-# Employee Management System (J2EE)
+# Employee Database Web App - JSP (JavaServer Pages)
 
 # Brief Description
 # A simple employee management web app, below are the following fxn:
